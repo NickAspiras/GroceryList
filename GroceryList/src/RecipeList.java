@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RecipeList extends GroceryList{
     public HashMap<String, List<String>> recipeItems;
-    public HashMap<String, List<Integer>> recipeNums;
+    public HashMap<String, List<Double>> recipeNums;
     public List<String> recipes;
     public int numOfRecipes;
 
@@ -16,7 +16,7 @@ public class RecipeList extends GroceryList{
     }
     public void createRecipe(String name){
         List<String> recipe = new ArrayList<>();
-        List<Integer> recipeVals = new ArrayList<>();
+        List<Double> recipeVals = new ArrayList<>();
         if(recipeItems.containsKey(name)){
             System.out.println(" The following recipe already exists.");
         }
@@ -29,13 +29,13 @@ public class RecipeList extends GroceryList{
         }
     }
 
-    public void addItem(String recipe, int value, String item){
+    public void addItem(String recipe, Double value, String item){
         if(!recipeItems.containsKey(recipe)){
             System.out.println(" The following recipe does not exist.");
         }
         else{
             List<String> items = recipeItems.get(recipe);
-            List<Integer> vals = recipeNums.get(recipe);
+            List<Double> vals = recipeNums.get(recipe);
             if(items.contains(item)){
                 System.out.println(item + " already exists in the recipe for " + recipe);
             }
@@ -55,7 +55,7 @@ public class RecipeList extends GroceryList{
         }
         else{
             List<String> items = recipeItems.get(recipe);
-            List<Integer> vals = recipeNums.get(recipe);
+            List<Double> vals = recipeNums.get(recipe);
             if(!items.contains(item)){
                 System.out.println(item + " does not exist in the recipe for " + recipe);
             }
@@ -71,14 +71,14 @@ public class RecipeList extends GroceryList{
         }
     }
 
-    public void changeItemValue(String recipe, int value, String item){
+    public void changeItemValue(String recipe, Double value, String item){
         if(!recipeItems.containsKey(recipe)){
             System.out.println(" The following recipe does not exist.");
         }
         else{
             List<String> items = recipeItems.get(recipe);
-            List<Integer> vals = recipeNums.get(recipe);
-            int hold = 0;
+            List<Double> vals = recipeNums.get(recipe);
+            Double hold = 0.0;
             if(!items.contains(item)){
                 System.out.println(item + " does not exist in the recipe for " + recipe);
             }
@@ -93,17 +93,11 @@ public class RecipeList extends GroceryList{
     }
     public void printRecipe(String name){
         List<String> recipe = recipeItems.get(name);
-        List<Integer> nums = recipeNums.get(name);
+        List<Double> nums = recipeNums.get(name);
         System.out.println("Here is the recipe for " + name);
         for(int i = 0; i < recipe.size(); i++){
             System.out.println(nums.get(i) + " " + recipe.get(i));
         }
 
-    }
-    public static void main(String[] args){
-        RecipeList recipe = new RecipeList();
-        String name = "Aspa";
-        recipe.createRecipe(name);
-        recipe.printRecipe(name);
     }
 }
