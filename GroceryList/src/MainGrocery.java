@@ -27,11 +27,11 @@ public class MainGrocery extends RecipeList{
                 while (myReader.hasNextLine() && !data.equals("\n")) {
                     int counter = 0;
                     val = "";
-                    while((int)data.charAt(counter) < 58 && (int)data.charAt(counter) > 47){
+                    while((int)data.charAt(counter) == 46 || (int)data.charAt(counter) < 58 && (int)data.charAt(counter) > 47){
                         val += Character.toString(data.charAt(counter));
                         counter++;
                     }
-                    int value = Integer.parseInt(val);
+                    Double value = Double.parseDouble(val);
                     data = data.substring(counter);
                     recipe.addItem(recipeName, value, data);
                     data = myReader.nextLine();
@@ -52,9 +52,10 @@ public class MainGrocery extends RecipeList{
         System.out.println("Here is the list of recipes to choose from: ");
         Scanner input = new Scanner(System.in);
         int index = 0;
+        String endInput = "";
         List<Integer> indices = new ArrayList<>();
         for(int i = 0; i < recipe.numOfRecipes; i++){
-            System.out.println(i + ". " + recipe.recipes.get(i));
+            System.out.println(i + 1 + ". " + recipe.recipes.get(i));
         }
         System.out.println("From the recipe list, please enter the index of the recipes you want for the list");
         System.out.println("Enter 0 to quit");
@@ -66,7 +67,7 @@ public class MainGrocery extends RecipeList{
                 index = Integer.parseInt(input.nextLine());
             }
             try{
-                list.addRecipe(list, recipe.recipeItems.get(recipe.recipes.get(index)), recipe.recipeNums.get(recipe.recipes.get(index)));
+                list.addRecipe(list, recipe.recipeItems.get(recipe.recipes.get(index - 1)), recipe.recipeNums.get(recipe.recipes.get(index - 1)));
             }catch(IndexOutOfBoundsException e){
                 System.out.println("The following index is not accepted. Please choose an index in the list");
                 //e.printStackTrace();
@@ -75,7 +76,37 @@ public class MainGrocery extends RecipeList{
             index = Integer.parseInt(input.nextLine());
         }
         System.out.println("");
+        System.out.println("Would you like to do anything else? Please say add to add item, remove to remove item, or done if done");
+        endInput = input.nextLine();
+        while(!endInput.equals("done")){
+            if(endInput.equals("add")){
+                System.out.println("What would you like to add?");
+                String item = input.nextLine();
+                System.out.println("How much of that item would you like to add?");
+                Double val = Double.parseDouble(input.nextLine());
+                if(list.list.contains(item)){
+                    list.updateItem(item, val);
+                }
+                else{
+                    list.addItem(item);
+                    list.updateItem(item, val - 1.0);
+                }
+
+            }
+            else if(endInput.equals("remove")){
+                System.out.println("What would you like to add?");
+                String item = input.nextLine();
+                list.deleteItem(item);
+            }
+            else{
+                System.out.println("The following choice is not valid. Please re-enter your choice.");
+            }
+            System.out.println("Would you like to do anything else? Please say add to add item, remove to remove item, or done if done");
+            endInput = input.nextLine();
+        }
         System.out.println("Here is your grocery list: ");
+        list.round();
         list.printList();
+        list.writeList("grocery");
     }
 }
